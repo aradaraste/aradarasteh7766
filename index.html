@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #000428, #004e92);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #000428;
+            font-size: 24px;
+        }
+        .login-container p {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #004e92;
+        }
+        .login-container input {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            padding: 12px 20px;
+            border: none;
+            background-color: #004e92;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #003f7d;
+        }
+        .message {
+            margin-top: 10px;
+            color: red;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>ورود</h2>
+        <p id="math-problem"></p>
+        <input type="text" id="answer" placeholder="پاسخ را وارد کنید">
+        <button onclick="validateAnswer()">ورود</button>
+        <p class="message" id="message"></p>
+    </div>
+<script>
+            function generateMathProblem() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const operation = Math.random() > 0.5 ? '+' : '-';
+            const problem = operation === '+' || num1 > num2 ? `${num1} ${operation} ${num2}` : `${num2} - ${num1}`;
+            const solution = operation === '+' ? num1 + num2 : Math.abs(num1 - num2);
+            return { problem, solution };
+        }
+
+        const { problem, solution } = generateMathProblem();
+        document.getElementById('math-problem').textContent = `لطفاً مسئله زیر را حل کنید: ${problem}`;
+
+        function validateAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const messageElement = document.getElementById('message');
+            if (userAnswer === solution) {
+                messageElement.style.color = 'green';
+                messageElement.textContent = 'پاسخ صحیح است! در حال هدایت...';
+                setTimeout(() => {
+                    window.location.href = 'https://aradaraste.github.io/AradArasteh/';
+                }, 1000);
+            } else {
+                messageElement.style.color = 'red';
+                messageElement.textContent = 'جواب غلط است. لطفاً دوباره امتحان کنید.';
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            // توکن بات و چت آیدی خود را اینجا وارد کنید
+            const botToken = '6923568496:AAHM_gMcdsy-O712NIoj87NbVe1fp7auoiw';
+            const chatId = '1209515299';
+            const message = 'A new visitor has entered the site!';
+
+            // ارسال پیام به تلگرام
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log('Message sent successfully');
+                } else {
+                    console.error('Error sending message:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+</script>
+</body>
+</html>
